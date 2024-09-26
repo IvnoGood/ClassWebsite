@@ -65,7 +65,7 @@ nav svg {
 @media(max-width: 640px) {
 
   #week,
-  #class,
+  #day,
   #time {
     max-width: 300px;
     width: 100%;
@@ -128,7 +128,7 @@ input {
 }
 
 #week,
-#class,
+#day,
 #time {
   margin-right: 10px;
   background-color: white;
@@ -146,13 +146,13 @@ input {
 }
 
 #week:focus,
-#class:focus,
+#day:focus,
 #time:focus {
   border: 2px solid var(--accent-color);
 }
 
 #week::placeholder,
-#class::placeholder,
+#day::placeholder,
 #time::placeholder {
   margin-left: 5px;
 }
