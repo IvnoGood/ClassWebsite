@@ -27,6 +27,13 @@ const week = document.getElementById("week");
 const day = document.getElementById("day");
 const time = document.getElementById("time");
 
+var connection = localStorage.getItem("isconnected");
+
+if (connection == false) {
+    window.alert("redirecting...");
+    window.location.href = "../pages/login.html";
+}
+
 onValue(ref(database, '/week'), (snapshot) => {
     const data = snapshot.val();
     console.log(data);

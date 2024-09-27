@@ -2,9 +2,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebas
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-//or
-//https://firebase.google.com/docs/web/learn-more?hl=fr#libraries-cdn
+//  https://firebase.google.com/docs/web/setup#available-libraries
+//  or
+//! https://firebase.google.com/docs/web/learn-more?hl=fr#libraries-cdn
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,18 +21,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase();
 
-var aValue = localStorage.getItem(isconnected);
+let connection = localStorage.getItem("isconnected");
+console.log(connection);
 
+if (connection == null) {
+    localStorage.setItem("isconnected", false);
+    console.log("LocalStorage key 'isconnected' was not found, creating it with default value.");
+    connection = false;
+}
 
-if (aValue == true) {
-    window.alert("redirecting...");
+if (connection == "true") {
     window.location.href = "../index.html";
 }
 
 document.getElementById("login-button").addEventListener("click", () => {
     onValue(ref(database, '/password'), (snapshot) => {
         const data = snapshot.val();
-        if (document.getElementById("login-password") == data) {
+        if (document.getElementById("login-password").value == data) {
             localStorage.setItem("isconnected", "true");
             window.location.href = "../index.html";
         }
