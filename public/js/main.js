@@ -23,22 +23,9 @@ const app = initializeApp(firebaseConfig);
 
 const database = getDatabase();
 
-// Example usage
-/* const name = "text"
-const email = "text"
-const userId = "06177"
-set(ref(database, 'users/' + userId), {
-    username: name,
-    email: email
-}); */
-
-/* const list = document.getElementById('anrede');
-
-['Herr', 'Frau'].forEach(item => {
-    let option = document.createElement('option');
-    option.value = item;
-    list.appendChild(option);
-}); */
+const week = document.getElementById("week");
+const day = document.getElementById("day");
+const time = document.getElementById("time");
 
 onValue(ref(database, '/week'), (snapshot) => {
     const data = snapshot.val();
@@ -51,9 +38,6 @@ onValue(ref(database, '/week'), (snapshot) => {
 
 });
 
-const week = document.getElementById("week");
-const day = document.getElementById("day");
-const time = document.getElementById("time");
 
 document.getElementById('research-button').addEventListener("click", async function () {
     if (week.value == "Week B") {
@@ -61,26 +45,20 @@ document.getElementById('research-button').addEventListener("click", async funct
     } else {
         var WeekUpdated = "A"
     }
-    /* var class1 = getclass1(WeekUpdated, day.value, time.value)
-    console.log(class1) */
+    const class1Data = await getclass1(WeekUpdated, day.value, time.value);
 
-    try {
-        const class1Data = await getclass1(WeekUpdated, day.value, time.value);
-        console.log(class1Data); // Logs the data retrieved from the database
-    } catch (error) {
-        console.error("Error retrieving class1 data:", error);
-    }
-});
+    console.log(class1Data);
 
-
-
-/* function getclass1(week, day, time) {
-    var class1 = onValue(ref(database, week + "/" + day + "/" + time + "/"), (snapshot) => {
-        const data = snapshot.val();
-        return data;
+    Object.keys(class1Data).forEach((key, index) => {
+        console.log(`${class1Data[key]}`);
+        const named = "class-table" + (index + 1);
+        const table = document.getElementById(named);
+        table.innerHTML = `${class1Data[key]}`;
     });
-    return class1;
-} */
+
+
+
+});
 
 async function getclass1(week, day, time) {
     const class1Ref = ref(database, week + "/" + day + "/" + time + "/");
