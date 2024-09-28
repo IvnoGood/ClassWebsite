@@ -147,6 +147,7 @@ input {
   background-color: white;
   margin-right: 10px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .research-button:hover {

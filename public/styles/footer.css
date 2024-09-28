@@ -1,0 +1,67 @@
+.footer {
+    background-color: var(--color-1);
+    color: var(--text-color);
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    height: 75px;
+    align-items: center;
+}
+
+.link-div {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.github-icon {
+    height: 35px;
+    position: relative;
+}
+
+#github-link:visited,
+:active,
+:link {
+    margin-left: 5px;
+    color: white;
+}
+
+.author {
+    margin-left: 10px;
+}
+
+.upload {
+    margin-right: 15px;
+}
+
+.upload-desc-div {
+    display: flex;
+}
+
+.info-span {
+    height: 15px;
+    position: relative;
+    /* margin-right: 5px;
+    margin-bottom: 3px; */
+}
+
+.upload-timetable {
+    color: white;
+    border: none;
+}
+
+input[type="file"]::file-selector-button {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: var(--accent-color);
+    color: white;
+}

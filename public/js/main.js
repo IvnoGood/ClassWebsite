@@ -1,11 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+import { getDatabase, ref as dbRef, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js"
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 //or
-//https://firebase.google.com/docs/web/learn-more?hl=fr#libraries-cdn
+//!https://firebase.google.com/docs/web/learn-more?hl=fr#libraries-cdn
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -20,12 +21,15 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 const database = getDatabase();
+const storage = getStorage(app);
 
 const week = document.getElementById("week");
 const day = document.getElementById("day");
 const time = document.getElementById("time");
+
+const fileInput = document.getElementById('timetable-input');
+const uploadButton = document.getElementById('upload-btn');
 
 var connection = localStorage.getItem("isconnected");
 
@@ -34,7 +38,7 @@ if (connection == false) {
     window.location.href = "../pages/login.html";
 }
 
-onValue(ref(database, '/week'), (snapshot) => {
+onValue(dbRef(database, '/week'), (snapshot) => {
     const data = snapshot.val();
     console.log(data);
     if (data == "b") {
@@ -46,7 +50,7 @@ onValue(ref(database, '/week'), (snapshot) => {
 });
 
 
-document.getElementById('research-button').addEventListener("click", async function () {
+document.getElementById("research-button").addEventListener("click", async function () {
     if (week.value == "Week B") {
         var WeekUpdated = "B"
     } else {
@@ -84,3 +88,40 @@ async function getclass1(week, day, time) {
         });
     });
 }
+
+// Add event listener for upload button
+uploadButton.addEventListener('click', function () {
+    // Get the selected file
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert("No file selected.");
+        return;
+    }
+
+    // Create a storage reference
+    const fileRef = storageRef(storage, 'uploads/' + file.name);  // Renamed to fileRef
+
+    // Upload the file
+    const uploadTask = uploadBytesResumable(fileRef, file);
+
+    // Monitor upload progress
+    uploadTask.on('state_changed',
+        (snapshot) => {
+            // Progress of the upload
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+        },
+        (error) => {
+            // Handle unsuccessful uploads
+            console.error('Upload failed:', error);
+        },
+        () => {
+            // Handle successful uploads
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {  // Use uploadTask.snapshot.ref here
+                console.log('File available at', downloadURL);
+                alert('File successfully uploaded!');
+            });
+        }
+    );
+});
