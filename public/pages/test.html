@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload to Firebase</title>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js"></script>
+</head>
+
+<body>
+
+    <input type="file" name="timetable" id="timetable-input" class="upload-timetable">
+    <button id="upload-button">Upload</button>
+
+    <script type="module">
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBQ77lYII2_FhZGKpQ5nCcG6AXDuQwW9js",
+            authDomain: "classweb-9137a.firebaseapp.com",
+            databaseURL: "https://classweb-9137a-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "classweb-9137a",
+            storageBucket: "classweb-9137a.appspot.com",
+            messagingSenderId: "1000363116911",
+            appId: "1:1000363116911:web:031c7c874b322b1fb7009a"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const storage = firebase.storage();
+
+        const fileInput = document.getElementById('timetable-input');
+        const uploadButton = document.getElementById('upload-button');
+
+        uploadButton.addEventListener('click', function () {
+            // Get the selected file
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert("No file selected.");
+                return;
+            }
+
+            // Create a storage reference
+            const fileRef = storage.ref('uploads/' + file.name);
+
+            // Upload the file
+            const uploadTask = fileRef.put(file);
+
+            // Monitor upload progress
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    // Progress of the upload
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                },
+                (error) => {
+                    // Handle unsuccessful uploads
+                    console.error('Upload failed:', error);
+                },
+                () => {
+                    // Handle successful uploads
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        console.log('File available at', downloadURL);
+                        alert('File successfully uploaded!');
+                    });
+                }
+            );
+        });
+    </script>
+</body>
+
+</html>

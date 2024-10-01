@@ -9,10 +9,10 @@ import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebase
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBQ77lYII2_FhZGKpQ5nCcG6AXDuQwW9js",
-    authDomain: "class1web-9137a.firebaseapp.com",
+    authDomain: "classweb-9137a.firebaseapp.com",
     databaseURL: "https://classweb-9137a-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "class1web-9137a",
-    storageBucket: "class1web-9137a.appspot.com",
+    projectId: "classweb-9137a",
+    storageBucket: "classweb-9137a.appspot.com",
     messagingSenderId: "1000363116911",
     appId: "1:1000363116911:web:031c7c874b322b1fb7009a"
 };

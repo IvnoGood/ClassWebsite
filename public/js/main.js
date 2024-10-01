@@ -1,7 +1,19 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getDatabase, ref as dbRef, onValue } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
-import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js"
+import {
+    initializeApp
+}
+    from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+//
+import {
+    getDatabase, ref as dbRef, onValue
+}
+    from "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js";
+//
+import {
+    getStorage, ref as storageRef, uploadBytes, uploadBytesResumable, getDownloadURL
+}
+    from "https://www.gstatic.com/firebasejs/10.9.0/firebase-storage.js"
+//
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -11,10 +23,10 @@ import { getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL } f
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBQ77lYII2_FhZGKpQ5nCcG6AXDuQwW9js",
-    authDomain: "class1web-9137a.firebaseapp.com",
-    databaseURL: "https://classweb-9137a-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "class1web-9137a",
-    storageBucket: "class1web-9137a.appspot.com",
+    authDomain: "classweb-9137a.firebaseapp.com",
+    databaseURL: "https://classweb-9137a-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "classweb-9137a",
+    storageBucket: "classweb-9137a.appspot.com",
     messagingSenderId: "1000363116911",
     appId: "1:1000363116911:web:031c7c874b322b1fb7009a"
 };
@@ -22,7 +34,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase();
-const storage = getStorage(app);
+const storage = getStorage();
 
 const week = document.getElementById("week");
 const day = document.getElementById("day");
@@ -32,6 +44,19 @@ const fileInput = document.getElementById('timetable-input');
 const uploadButton = document.getElementById('upload-btn');
 
 var connection = localStorage.getItem("isconnected");
+
+const FILE = document.getElementById('timetable-input').files[0];
+
+// Create a storage reference in Firebase (you can name it something like 'uploads/' + filename)
+const Ref = storageRef(storage + 'document');
+
+// Upload the file to the storage
+/* uploadBytes(Ref, FILE).then((snapshot) => {
+    console.log('Uploaded a blob or file!');
+}); */
+
+
+
 
 if (connection == false) {
     window.alert("redirecting...");
@@ -56,41 +81,46 @@ document.getElementById("research-button").addEventListener("click", async funct
     } else {
         var WeekUpdated = "A"
     }
-    const class1Data = await getclass1(WeekUpdated, day.value, time.value);
+    const classData = await getclass(WeekUpdated, day.value, time.value);
 
-    console.log(class1Data);
+    console.log(classData);
 
-    Object.keys(class1Data).forEach((key, index) => {
-        console.log(`${class1Data[key]}`);
+    Object.keys(classData).forEach((key, index) => {
+        console.log(`${classData[key]}`);
         const named = "class-table" + (index + 1);
         const table = document.getElementById(named);
-        table.innerHTML = `${class1Data[key]}`;
+        table.innerHTML = `${classData[key]}`;
     });
 
 
 
 });
 
-async function getclass1(week, day, time) {
-    const class1Ref = ref(database, week + "/" + day + "/" + time + "/");
+async function getclass(week, day, time) {
+    const classRef = dbRef(database, "/" + week + "/" + day + "/" + time);
+    /*     const classReft = dbRef(database, "/A/Tuesday/8:12/");
+        console.log(week + "/" + day + "/" + time + "/");
+        console.log(time);
+        document.getElementById('test').innerHTML = "/" + week + "/" + day + "/" + time */
 
     // Wrap the onValue function in a Promise
     return new Promise((resolve, reject) => {
-        onValue(class1Ref, (snapshot) => {
+        onValue(classRef, (snapshot) => {
             const data = snapshot.val();
             if (data !== null) {
                 resolve(data); // Resolve the promise with the data
             } else {
-                reject('No data found');
+                reject('No data found in db');
             }
         }, (error) => {
-            reject(error); // Reject the promise in case of an error
+            reject("error" + error);
+            // Reject the promise in case of an error
         });
     });
 }
 
 // Add event listener for upload button
-uploadButton.addEventListener('click', function () {
+/* uploadButton.addEventListener('click', function () {
     // Get the selected file
     const file = fileInput.files[0];
 
@@ -124,4 +154,8 @@ uploadButton.addEventListener('click', function () {
             });
         }
     );
+}); */
+
+uploadButton.addEventListener('click', function () {
+
 });
