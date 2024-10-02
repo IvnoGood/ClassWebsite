@@ -58,9 +58,9 @@ const Ref = storageRef(storage + 'document');
 
 
 
-if (connection == false) {
-    window.alert("redirecting...");
-    window.location.href = "../pages/login.html";
+if (connection == false || connection == null) {
+    window.location.href = './pages/login.html';
+} else {
 }
 
 onValue(dbRef(database, '/week'), (snapshot) => {

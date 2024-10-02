@@ -32,6 +32,7 @@ if (connection == null) {
 
 if (connection == "true") {
     window.location.href = "../index.html";
+
 }
 
 document.getElementById("login-button").addEventListener("click", () => {
@@ -39,6 +40,7 @@ document.getElementById("login-button").addEventListener("click", () => {
         const data = snapshot.val();
         if (document.getElementById("login-password").value == data) {
             localStorage.setItem("isconnected", "true");
+            window.alert("redirect");
             window.location.href = "../index.html";
         }
     });
