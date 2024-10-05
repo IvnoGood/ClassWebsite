@@ -43,6 +43,8 @@ const time = document.getElementById("time");
 const fileInput = document.getElementById('timetable-input');
 const uploadButton = document.getElementById('upload-btn');
 
+const FooterOverlay = document.getElementById('footer-overlay');
+
 var connection = localStorage.getItem("isconnected");
 
 const FILE = document.getElementById('timetable-input').files[0];
@@ -60,7 +62,6 @@ const Ref = storageRef(storage + 'document');
 
 if (connection == false || connection == null) {
     window.location.href = './pages/login.html';
-} else {
 }
 
 onValue(dbRef(database, '/week'), (snapshot) => {
@@ -71,9 +72,11 @@ onValue(dbRef(database, '/week'), (snapshot) => {
     } else {
         document.getElementById("week").value = "Week A";
     }
-
 });
 
+FooterOverlay.addEventListener("click", function () {
+    window.location.href = 'https://github.com/IvnoGood/ClassWebsite?tab=readme-ov-file#how-to';
+})
 
 document.getElementById("research-button").addEventListener("click", async function () {
     if (week.value == "Week B") {

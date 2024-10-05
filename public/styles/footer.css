@@ -65,3 +65,20 @@ input[type="file"]::file-selector-button:hover {
     background-color: var(--accent-color);
     color: white;
 }
+
+.tutorial {
+    display: flex;
+}
+
+.tutorial-text {
+    margin-left: 5px;
+}
+
+#footer-overlay {
+    cursor: pointer;
+    position: absolute;
+    display: block;
+    width: 216.29px;
+    height: 25px;
+    z-index: 100;
+}
